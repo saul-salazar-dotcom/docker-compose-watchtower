@@ -1,0 +1,47 @@
+stages:
+- deploy
+- operations
+
+.template_deploy: &deploy
+  stage: deploy
+  when: always
+  script:
+    - make start
+
+.template_restart: &restart
+  stage: operations
+  when: manual
+  script:
+    - make restart
+
+.template_stop: &stop
+  stage: operations
+  when: manual
+  script:
+    - make stop
+
+.template_logs: &logs
+  stage: operations
+  when: manual
+  script:
+    - make logs
+
+master_deploy:
+  <<: *deploy
+  only:
+  - master
+
+master_restart:
+  <<: *restart
+  only:
+  - master
+
+master_stop:
+  <<: *stop
+  only:
+  - master
+
+master_logs:
+  <<: *logs
+  only:
+  - master
